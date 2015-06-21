@@ -4,10 +4,10 @@
 <title>Sample Map</title>
 <style>
 #mapdiv {
-    margin: 0;
+    margin: 10;
     padding: 0;
-    width: 500px;
-    height: 500px;
+    width: 470px;
+    height: 250px;
 }
 </style>
  
@@ -15,13 +15,14 @@
 <script>
     var watchId = null;
     function geoloc() {
+    
     if (navigator.geolocation) {
         var optn = {
                 enableHighAccuracy : true,
                 timeout : Infinity,
                 maximumAge : 0
         };
-    watchId = navigator.geolocation.watchPosition(showPosition, showError, optn);
+    watchId = navigator.geolocation.getCurrentPosition(showPosition, showError, optn);
     } else {
             alert('Geolocation is not supported in your browser');
     }
@@ -35,6 +36,7 @@ function showPosition(position) {
             mapTypeId : google.maps.MapTypeId.ROADMAP
         };
         var mapObj = document.getElementById('mapdiv');
+        mapObj.style.display='visible';
         var googleMap = new google.maps.Map(mapObj, mapOptions);
         var markerOpt = {
             map : googleMap,
@@ -66,12 +68,12 @@ function showPosition(position) {
             });
             }
  
-            function stopWatch() {
-                if (watchId) {
-                    navigator.geolocation.clearWatch(watchId);
-                    watchId = null;
- 
-                }
+
+function stopWatch() {
+                
+ var elem= document.getElementById('mapdiv');
+ elem.innerHTML = "As requested, location data cleared"
+                
             }
  
         function showError(error) {
@@ -95,12 +97,17 @@ function showPosition(position) {
  
     </head>
     <body>
-	<p> Sample </p>
-	<button onclick="geoloc()"> start </button>
-        <p id = 'mapdiv'></p>
+        <table align="center">
+          <tr>
+            <td colspan="2" align="center"> GPS App</td>
+          </tr>
+          <tr>
+       	     <td><button onclick="geoloc()"> Show My Location  </button></td>
+             <td><button onclick="stopWatch()" > Clear My Location </button></td>
+           </tr>
+           </table>
 
-        <button onclick="stopWatch()">
-            Stop
-        </button>
+              <div><p id = 'mapdiv' align="center"></p></div>
+          
     </body>
 </html>
